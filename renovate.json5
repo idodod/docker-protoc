@@ -1,5 +1,6 @@
 {
   platform: "github",
+  masterIssue: true,
   baseBranches: [
     "master"
   ],
