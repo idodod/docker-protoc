@@ -1,0 +1,73 @@
+{
+  platform: "github",
+  baseBranches: [
+    "master"
+  ],
+  extends: [
+    // A lot of default settings that you can extend can be found in the presets section: https://docs.renovatebot.com/presets-compatibility/
+    ":ignoreModulesAndTests"
+  ],
+  enabledManagers: [
+    // In this example I only enable the manager 'regex' here (see the matchManagers in the packageRules section below)
+    // If you need more, see https://docs.renovatebot.com/modules/manager/
+    "regex"
+  ],
+  "regexManagers": [
+    {
+      "fileMatch": [
+        "variables.sh$"
+      ],
+      "matchStrings": [
+        // named capturing group, must include 'currentValue' as the name
+        "GRPC_WEB_VERSION=\\$\\{GRPC_WEB_VERSION:-(?<currentValue>[\\d.]*?)\\}\\n"
+      ],
+      // the name of the dependency in the package manager
+      "depNameTemplate": "grpc-web",
+      // which package manager should Renovate Bot look to find this dependency?
+      "datasourceTemplate": "npm"
+    },
+    {
+      "fileMatch": [
+        "variables.sh$"
+      ],
+      "matchStrings": [
+        "NODE_PROTOC_GEN_GRPC_WEB_VERSION=\\$\\{NODE_PROTOC_GEN_GRPC_WEB_VERSION:-(?<currentValue>[\\d.]*?)\\}\\n"
+      ],
+      "depNameTemplate": "grpc-web",
+      // see data source identifiers here: https://docs.renovatebot.com/modules/datasource
+      "datasourceTemplate": "npm"
+    }
+  ],
+  packageRules: [
+    // here you can define how dependency updates should be grouped in one or multiple PRs
+    // what is defined below, means you'll get 2 PRs at max, containing all minor / patch updates in one PR
+    // and all major updates in another PR
+    {
+      matchManagers: [
+        "regex"
+      ],
+      matchPackagePatterns: [
+        "*"
+      ],
+      matchUpdateTypes: [
+        "minor",
+        "patch"
+      ],
+      groupName: "protoc dependencies",
+      groupSlug: "non-major-protoc"
+    },
+    {
+      matchManagers: [
+        "regex"
+      ],
+      matchPackagePatterns: [
+        "*"
+      ],
+      matchUpdateTypes: [
+        "major"
+      ],
+      groupName: "protoc major dependencies",
+      groupSlug: "protoc"
+    }
+  ]
+}
