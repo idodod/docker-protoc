@@ -11,7 +11,8 @@
   enabledManagers: [
     // In this example I only enable the manager 'regex' here (see the matchManagers in the packageRules section below)
     // If you need more, see https://docs.renovatebot.com/modules/manager/
-    "regex"
+    "regex",
+    "gomod"
   ],
   "regexManagers": [
     {
