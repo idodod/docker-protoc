@@ -46,7 +46,8 @@
     // and all major updates in another PR
     {
       matchManagers: [
-        "regex"
+        "regex",
+        "gomod"
       ],
       matchPackagePatterns: [
         "*"
